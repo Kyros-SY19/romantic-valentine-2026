@@ -13,11 +13,30 @@ const fromFromUrl = params.get("from");
 const name = nameFromUrl ? decodeURIComponent(nameFromUrl) : "Amor";
 const from = fromFromUrl ? decodeURIComponent(fromFromUrl) : "alguien especial";
 
-const message = `${name}, desde que apareciste,
-todo tiene un brillo distinto.
+const messages = [
+  `${name}, desde que llegaste a mi vida,
+las cosas simples se volvieron mágicas
+y los días normales se volvieron especiales.
 
 Con cariño,
-${from} ❤️`;
+${from} ❤️`,
+
+  `${name}, apareciste sin avisar,
+y desde entonces el mundo
+aprendió a latir distinto.
+
+Con amor,
+${from} ✨`,
+
+  `${name}, llegaste
+y sin darte cuenta
+te volviste mi lugar favorito.
+
+Con amor,
+${from} ❤️`,
+];
+
+const message = messages[Math.floor(Math.random() * messages.length)];
 
 //Ocultar formulario si se crea link  //
 const formContainer = document.querySelector(".link-generator");
@@ -142,6 +161,6 @@ copyLinkBtn.addEventListener("click", async () => {
       copyLinkBtn.textContent = "Copiar";
     }, 1500);
   } catch {
-    alert("No se pudo copiar el link 😅");
+    alert("No se pudo copiar el link ");
   }
 });
