@@ -1,0 +1,434 @@
+/* Reset y variables */
+:root {
+  --bg-main: radial-gradient(circle at top, #2a0f2f, #0b0613);
+  --bg-accent: radial-gradient(
+    circle at 30% 20%,
+    rgba(255, 105, 180, 0.15),
+    transparent 40%
+  );
+  --envelope-main: linear-gradient(145deg, #8b5cf6, #ec4899);
+  --envelope-dark: linear-gradient(145deg, #6d28d9, #be185d);
+  --letter-bg: linear-gradient(180deg, #ffffff, #f6f0ff);
+  --text-dark: #2b2b2b;
+  --shadow-soft: 0 25px 60px rgba(0, 0, 0, 0.45);
+  --glow-soft: 0 0 40px rgba(236, 72, 153, 0.45);
+  --radius-lg: 18px;
+  --transition-smooth: 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  font-family:
+    "Poppins",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  background: var(--bg-accent), var(--bg-main);
+  color: #fff;
+  overflow: hidden;
+}
+
+/* Viñeta suave */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    circle at center,
+    transparent 45%,
+    rgba(0, 0, 0, 0.65)
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Canvas partículas */
+#particles-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  filter: blur(0.4px) brightness(1.1);
+}
+
+/* Layout */
+.app {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.scene {
+  perspective: 1200px;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+}
+
+/* Botón música */
+.music-toggle {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 14px;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.music-toggle:hover {
+  transform: translateY(-2px) scale(1.04);
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 6px 18px rgba(236, 72, 153, 0.35);
+}
+
+.music-toggle:active {
+  transform: scale(0.97);
+}
+
+/* Flotación sutil */
+@keyframes floatIdle {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Sobre */
+.envelope {
+  position: relative;
+  width: 320px;
+  height: 220px;
+  transform-style: preserve-3d;
+  transition: transform var(--transition-smooth);
+  cursor: pointer;
+  filter: drop-shadow(var(--shadow-soft));
+  animation: floatIdle 4.5s ease-in-out infinite;
+  will-change: transform;
+}
+
+.envelope:hover {
+  filter: brightness(1.12) saturate(1.05);
+}
+
+/* Base del sobre */
+.envelope-base {
+  position: absolute;
+  inset: 0;
+  background: var(--envelope-main);
+  border-radius: var(--radius-lg);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+}
+
+/* Tapa */
+.envelope-lid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: var(--envelope-dark);
+  transform-origin: top;
+  transform: rotateX(0deg);
+  border-top-left-radius: var(--radius-lg);
+  border-top-right-radius: var(--radius-lg);
+  transition: transform var(--transition-smooth);
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.18);
+  will-change: transform;
+}
+
+/* Carta (estilo romántico mejorado) */
+.letter {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  right: 12px;
+  height: 180px;
+  background: var(--letter-bg);
+  border-radius: 26px 26px 18px 18px;
+  transform: translateY(60px) rotateX(0deg) scale(0.96);
+  opacity: 0;
+  transition:
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.6s ease;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+  transform-style: preserve-3d;
+  border: 2px solid rgba(236, 72, 153, 0.25);
+}
+
+/* Brillito superior del papel */
+.letter::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.65),
+    transparent 45%
+  );
+  pointer-events: none;
+}
+
+/* Pliegue del papel */
+.letter::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: 36px;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(0, 0, 0, 0.18),
+    transparent
+  );
+  opacity: 0.4;
+}
+
+/* Contenido */
+.letter-content {
+  padding: 22px;
+  color: var(--text-dark);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  background: linear-gradient(180deg, #ffffff, #fde8f3);
+  border-radius: 20px;
+}
+
+/* Título */
+.letter-title {
+  font-family: "Playfair Display", serif;
+  font-size: 22px;
+  margin-bottom: 10px;
+  color: #be185d;
+  text-shadow: 0 2px 10px rgba(236, 72, 153, 0.25);
+}
+
+/* Texto */
+.letter-text {
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 60px;
+}
+
+/* Animación al abrir */
+.envelope.open .letter {
+  animation: letterPop 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes letterPop {
+  0% {
+    transform: translateY(40px) rotateX(0deg) scale(0.95);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(-70px) rotateX(12deg) scale(1.02);
+    opacity: 1;
+  }
+}
+
+.signature {
+  margin-top: 12px;
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+/* Abierto */
+.envelope.open .envelope-lid {
+  transform: rotateX(-140deg);
+}
+
+.envelope.open .letter {
+  transform: translateY(-20px) scale(1);
+  opacity: 1;
+}
+
+/* Halo romántico */
+.envelope::after {
+  content: "";
+  position: absolute;
+  inset: -16px;
+  border-radius: 24px;
+  background: radial-gradient(
+    circle,
+    rgba(236, 72, 153, 0.45),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
+
+.envelope.open::after {
+  opacity: 1;
+}
+
+/* Glow animado */
+@keyframes glowPulse {
+  0% {
+    box-shadow:
+      0 0 0 rgba(236, 72, 153, 0),
+      0 20px 40px rgba(0, 0, 0, 0.45);
+  }
+  50% {
+    box-shadow:
+      0 0 35px rgba(236, 72, 153, 0.55),
+      0 30px 60px rgba(0, 0, 0, 0.55);
+  }
+  100% {
+    box-shadow:
+      0 0 0 rgba(236, 72, 153, 0),
+      0 20px 40px rgba(0, 0, 0, 0.45);
+  }
+}
+
+.envelope.open {
+  animation: glowPulse 2.6s ease-in-out infinite;
+}
+
+/* Móvil */
+@media (max-width: 480px) {
+  .envelope {
+    width: 260px;
+    height: 180px;
+  }
+
+  .letter {
+    height: 150px;
+  }
+
+  .letter-title {
+    font-size: 18px;
+  }
+
+  .letter-text {
+    font-size: 13px;
+  }
+}
+
+/* Generador */
+.link-generator {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(14px);
+  padding: 14px;
+  border-radius: 18px;
+  width: min(320px, 92vw);
+  z-index: 10;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+}
+
+.link-generator input,
+.link-generator button {
+  padding: 11px 14px;
+  border-radius: 12px;
+  border: none;
+  font-size: 14px;
+}
+
+.link-generator input {
+  background: rgba(255, 255, 255, 0.95);
+  color: #222;
+  outline: none;
+}
+
+.link-generator input:focus {
+  box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.5);
+}
+
+.link-generator button {
+  cursor: pointer;
+  background: linear-gradient(135deg, #ec4899, #8b5cf6);
+  color: #fff;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.link-generator button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(236, 72, 153, 0.55);
+}
+
+.link-generator button:active {
+  transform: scale(0.97);
+}
+
+.link-result {
+  display: flex;
+  gap: 6px;
+}
+
+/* Bokeh romántico */
+.bokeh {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.bokeh span {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(
+    circle,
+    rgba(236, 72, 153, 0.25),
+    transparent 60%
+  );
+  border-radius: 50%;
+  animation: bokehFloat 18s linear infinite;
+  filter: blur(2px);
+}
+
+@keyframes bokehFloat {
+  0% {
+    transform: translateY(120vh) scale(0.8);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-40vh) scale(1.4);
+    opacity: 0;
+  }
+}
